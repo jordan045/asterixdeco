@@ -30,11 +30,14 @@ void DecodificadorASTERIX::RecibirTrama(Paquete p)
 
     start_azimut = start_azimut >> 3;   //Corrimiento, puede ser que no ande. Debe ser a la DERECHA
 
+    //Prueba para el maximo rango
+    if(start_range > 4000) qDebug() << "Rango excedido de 4000: " <<start_range;
+
     uint16_t* video_block = (uint16_t*) p.getVIDEO_BLOCK().data();
 
-    qDebug() << "Start Range: " << start_range;
-    qDebug() << "Start Azimut: " << start_azimut;
-    qDebug() << "--------------------";
+    //qDebug() << "Start Range: " << start_range;
+    //qDebug() << "Start Azimut: " << start_azimut;
+    //qDebug() << "--------------------";
 
     //Recorremos las celdas de videoblock y asignamos un color para mostrar
     for (int i = 0; i < valid_cells; i++){
