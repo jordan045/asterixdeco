@@ -28,7 +28,7 @@ void DecodificadorASTERIX::RecibirTrama(Paquete p)
     int start_range = p.getSTART_RG();
     int valid_cells = p.getValid_Cells();
 
-    start_azimut = start_azimut << 3;   //Corrimiento, puede ser que no ande
+    start_azimut = start_azimut >> 3;   //Corrimiento, puede ser que no ande. Debe ser a la DERECHA
 
     uint16_t* video_block = (uint16_t*) p.getVIDEO_BLOCK().data();
 
@@ -40,7 +40,7 @@ void DecodificadorASTERIX::RecibirTrama(Paquete p)
     for (int i = 0; i < valid_cells; i++){
         int muestra =  qFromBigEndian(video_block[i]) & 0x3fff;
         muestra = color(muestra);
-        //cargar_matriz(start_azimut, start_range + i, muestra);
+        cargar_matriz(start_azimut, start_range + i, muestra);
     }
 }
 
@@ -94,7 +94,7 @@ void DecodificadorASTERIX::pre_carga()
 
 
     //GENERA CIRCULOS DE PRUEBA
-   for(int f = 0; f < NFILAS; f++){
+   /*for(int f = 0; f < NFILAS; f++){
             float radio = ((500 * RANG_MAX) / NCOLUMNAS) ;
             float radioEscalado = (radio * ( RADIO_CANVAS - 3) ) / 256;
 
@@ -109,5 +109,5 @@ void DecodificadorASTERIX::pre_carga()
             sock->writeDatagram(QJsonDocument(json).toJson(), QHostAddress::LocalHost, 2020);
             //send(s, jsonStr.c_str(), jsonStr.size(), 0);
 
-    }
+    }*/
 }
