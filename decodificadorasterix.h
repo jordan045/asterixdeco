@@ -15,26 +15,28 @@ private:
 
     QUdpSocket *sock;
 
-    static const int nfilas = 8142;//8142 65535
-    static const int ncolumnas = 4504;
-    static const int altoPantalla = 4800;
-    static const int radioCanvas = altoPantalla / 2;
+    static const int NFILAS = 8142;//8142 65535
+    static const int CANT_COLORES = 6;
+    static const int MUESTRA_MAX = 16383; //2^14 muestras
+    static const int NCOLUMNAS = 4504;
+    static const int ALTO_PANTALLA = 4800;
+    static const int RADIO_CANVAS = ALTO_PANTALLA / 2;
     constexpr static const double nTRG = 3700.0;
     constexpr static const double pTRG = 1 / nTRG;
-    constexpr static const double rangMax = pTRG * 299792458.0 * 0.00053996;
+    constexpr static const double RANG_MAX = pTRG * 299792458.0 * 0.00053996;
 
-    double Mf[nfilas];
+    double Mf[NFILAS];
 
-    int M[nfilas][ncolumnas];
+    int M[NFILAS][NCOLUMNAS];
     int color(int c);
     void cargar_matriz(int f, int c, int col);
     void pre_carga();
 
 
-    int puntosX[nfilas][ncolumnas];
-    int puntosY[nfilas][ncolumnas];
-    int matrizPuntos[altoPantalla][altoPantalla];
-    double radioEscalado[ncolumnas];
+    int puntosX[NFILAS][NCOLUMNAS];
+    int puntosY[NFILAS][NCOLUMNAS];
+    int matrizPuntos[ALTO_PANTALLA][ALTO_PANTALLA];
+    double radioEscalado[NCOLUMNAS];
 };
 
 #endif // DECODIFICADORASTERIX_H
