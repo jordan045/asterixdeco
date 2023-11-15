@@ -24,7 +24,7 @@ void Paquete::setResolution(uint8_t r){ res = r;}
 void Paquete::setValid_Octets(quint16 o){ oct = o;}
 void Paquete::setValid_Cells(quint32 c){ cel = c;}
 void Paquete::setREP(uint8_t r){ rep = r;}
-void Paquete::setVIDEO_BLOCK(QByteArray s){ block = s; }
+void Paquete::setVIDEO_BLOCK(uint8_t *s){ block = s; }
 
 //GETTERS
 uint8_t Paquete::getSIC(){ return SIC; }
@@ -40,4 +40,4 @@ uint8_t Paquete::getResolution(){ return res; }
 quint16 Paquete::getValid_Octets(){ return oct; }
 quint32 Paquete::getValid_Cells(){ return cel; }
 uint8_t Paquete::getREP(){ return rep; }
-QByteArray Paquete::getVIDEO_BLOCK(){ return block; }
+uint8_t* Paquete::getVIDEO_BLOCK(){ return block; }

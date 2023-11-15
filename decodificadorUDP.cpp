@@ -196,15 +196,16 @@ void DecodificadorUDP::readyRead()
             else if(data_block->fspec1 & I240_051){
                 // video block medium data volume
                 quint8 rep = *(quint8 *)(data_fields+offset);
-                int size = rep * 64; // 64 bytes en 512 bits (tamaño en bits del bloque medium data volume)
-                QByteArray video_block = QByteArray::fromRawData((char *)data_fields+offset+1, size);
+                //int size = rep * 64; // 64 bytes en 512 bits (tamaño en bits del bloque medium data volume)
+                //QByteArray video_block = QByteArray::fromRawData((char *)data_fields+offset+1, size);
+                uint8_t *video_block =  data_fields+offset+1;
 
                 p->setREP(rep);
                 //json["rep"] = rep;
 
                 //p->setVIDEO_BLOCK(video_block);
 
-                p->setVIDEO_BLOCK(video_block.toHex('\x0'));
+                p->setVIDEO_BLOCK(video_block);
 
                 //json["video_block"] = QString(video_block.toBase64());
             }

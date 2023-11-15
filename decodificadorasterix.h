@@ -16,8 +16,8 @@ private:
     QUdpSocket *sock;
 
     static const int NFILAS = 8192;//8192 65535
-    static const int CANT_COLORES = 5;
-    static const int MUESTRA_MAX = 16383; //2^14 muestras
+    static const int CANT_COLORES = 6;
+    static const int MUESTRA_MAX = 65535; //2^16 muestras
     static const int NCOLUMNAS = 4504;
     static const int ALTO_PANTALLA = 4800;
     static const int RADIO_CANVAS = ALTO_PANTALLA / 2;

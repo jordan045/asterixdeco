@@ -24,7 +24,7 @@ public:
     void setValid_Octets(quint16 o);
     void setValid_Cells(quint32 c);
     void setREP(uint8_t r);
-    void setVIDEO_BLOCK(QByteArray s);
+    void setVIDEO_BLOCK(uint8_t *s);
 
     uint8_t getSIC();
     uint8_t getSAC();
@@ -39,7 +39,7 @@ public:
     quint16 getValid_Octets();
     quint32 getValid_Cells();
     uint8_t getREP();
-    QByteArray getVIDEO_BLOCK();
+    uint8_t* getVIDEO_BLOCK();
 
 
 
@@ -58,7 +58,7 @@ private:
     quint16 oct;
     quint32 cel;
     uint8_t rep;
-    QByteArray block;
+    uint8_t *block;
 };
 
 #endif // PAQUETE_H

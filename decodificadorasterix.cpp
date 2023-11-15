@@ -21,6 +21,8 @@ DecodificadorASTERIX::DecodificadorASTERIX()
 // y se manda a cargar a la matriz
 void DecodificadorASTERIX::RecibirTrama(Paquete p)
 {
+    //qDebug() << "------------------";
+    //qDebug() << "RECIBIMOS PAQUETE";
     // Azimut: Angulo obtenido
     // Range: Distancia del polo
     // ValidCells: Cantidad de celdas con info relevante
@@ -28,30 +30,43 @@ void DecodificadorASTERIX::RecibirTrama(Paquete p)
     int start_range = p.getSTART_RG();
     int valid_cells = p.getValid_Cells();
 
+    //qDebug() << "Valid Cells: " << valid_cells;
+
     start_azimut = start_azimut >> 3;   //Corrimiento, puede ser que no ande. Debe ser a la DERECHA
 
     //Prueba para el maximo rango
     //if(start_range > 4000) qDebug() << "Rango excedido de 4000: " <<start_range;
 
-    uint16_t* video_block = (uint16_t*) p.getVIDEO_BLOCK().data();
+    uint16_t* video_block = 0;
+    video_block = (uint16_t*) p.getVIDEO_BLOCK();
+    int muestra = 0;
+
+    //qDebug() << video_block;
 
     //qDebug() << "Start Range: " << start_range;
     //qDebug() << "Start Azimut: " << start_azimut;
-    //qDebug() << "--------------------";
+   // qDebug() << "--------------------";
 
+    int range = start_range;
     //Recorremos las celdas de videoblock y asignamos un color para mostrar
     for (int i = 0; i < valid_cells; i++){
+        //qDebug() << "-----FOOOOOOR--------------------";
+        muestra =  qFromBigEndian(video_block[i]);
 
-        int muestra =  qFromBigEndian(video_block[i]);
-        //muestra =  muestra & 0x3fff; //13 bits
-        qDebug() << muestra;
-        muestra = muestra >> 2;
-        qDebug() << muestra;
+        //qDebug() <<"Muestra Cruda: "<< muestra << "Azimut: " << start_azimut << "Range: " << start_range + i;
+        //qDebug() << p.getResolution();
+
+        //muestra = muestra >> 2;
+        //qDebug() << "Muestra con desplazamientos (14 bits): " << muestra;
         muestra = color(muestra);
-        qDebug() << muestra;
-        qDebug() << "--------------------------";
+        //qDebug() <<"A Color: "<< muestra;
+        //qDebug() << "--------------------------";
         cargar_matriz(start_azimut, start_range + i, muestra);
+        //range++;
     }
+
+    //qDebug() << "TERMINO PAQUETE";
+    //qDebug() << "----------------";
 }
 
 // Mapea la muestra al color
@@ -70,7 +85,7 @@ void DecodificadorASTERIX::cargar_matriz(int angulo, int rango, int muestra)
         M[angulo][rango] = muestra;
 
         if (coordX<ALTO_PANTALLA && coordY<ALTO_PANTALLA){
-            if (muestra != matrizPuntos[coordX][coordY]){ 
+            if (muestra != matrizPuntos[coordX][coordY]){
                 matrizPuntos[coordX][coordY] = muestra;
                 json["coordenadaX"] = coordX;
                 json["coordenadaY"] = coordY;
