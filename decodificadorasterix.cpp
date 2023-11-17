@@ -83,8 +83,8 @@ void DecodificadorASTERIX::pre_carga()
     }
 
     for(int c = 0; c < NCOLUMNAS; c++){
-        //double radio = ((c * RANG_MAX)/ NCOLUMNAS) ;//rangMax
-        radioEscalado[c] = (c * ( RADIO_CANVAS - 3) ) / 256;
+        double radio = ((c * RANG_MAX)/ NCOLUMNAS) ;//rangMax
+        radioEscalado[c] = (radio * ( RADIO_CANVAS - 3) ) / 256;
     }
 
     for(int f = 0; f < NFILAS; f++){
