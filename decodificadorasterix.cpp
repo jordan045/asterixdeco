@@ -21,8 +21,6 @@ DecodificadorASTERIX::DecodificadorASTERIX()
 // y se manda a cargar a la matriz
 void DecodificadorASTERIX::RecibirTrama(Paquete p)
 {
-    int maxRange = 0;
-
     // Azimut: Angulo obtenido
     // Range: Distancia del polo
     // ValidCells: Cantidad de celdas con info relevante
@@ -32,6 +30,8 @@ void DecodificadorASTERIX::RecibirTrama(Paquete p)
 
     start_azimut = start_azimut >> 3;   //Corrimiento, debe ser a la DERECHA
 
+   // qDebug() << start_azimut ;
+
     uint16_t* video_block = 0;
     video_block = (uint16_t*) p.getVIDEO_BLOCK();
     int muestra = 0;
@@ -39,10 +39,6 @@ void DecodificadorASTERIX::RecibirTrama(Paquete p)
     //Recorremos las celdas de videoblock y asignamos un color para mostrar
     for (int i = 0; i < valid_cells; i++){
         muestra =  qFromBigEndian(video_block[i]);
-        if(muestra > maxRange){
-            maxRange = muestra;
-            qDebug() << "Max Total " << maxRange;
-        }
         muestra = color(muestra);
         cargar_matriz(start_azimut, start_range + i, muestra);
     }
@@ -83,7 +79,7 @@ void DecodificadorASTERIX::pre_carga()
     }
 
     for(int c = 0; c < NCOLUMNAS; c++){
-        double radio = ((c * RANG_MAX)/ NCOLUMNAS) ;//rangMax
+        double radio = ((c * RANG_MAX)/ NCOLUMNAS)/2 ;//rangMax
         radioEscalado[c] = (radio * ( RADIO_CANVAS - 3) ) / 256;
     }
 
