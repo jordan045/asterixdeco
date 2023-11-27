@@ -25,6 +25,8 @@ private:
     constexpr static const double pTRG = 1 / nTRG;
     constexpr static const double RANG_MAX = pTRG * 299792458.0 * 0.00053996;
 
+    QString toSend = "";
+
     double Mf[NFILAS];
 
     int M[NFILAS][NCOLUMNAS];
