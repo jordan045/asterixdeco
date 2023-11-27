@@ -21,37 +21,29 @@ DecodificadorASTERIX::DecodificadorASTERIX()
 // y se manda a cargar a la matriz
 void DecodificadorASTERIX::RecibirTrama(Paquete p)
 {
-<<<<<<< HEAD
-    // Azimut: Angulo obtenido
-    // Range: Distancia del polo
-    // ValidCells: Cantidad de celdas con info relevante
-    int start_azimut = p.getSTART_AZ();
-    int start_range = p.getSTART_RG();
-    int valid_cells = p.getValid_Cells();
-=======
 
     int start_azimut = p.getSTART_AZ();     // Azimut: Angulo obtenido
     int start_range = p.getSTART_RG();      // Range: Distancia del polo
     int valid_cells = p.getValid_Cells();   // ValidCells: Cantidad de celdas con info relevante
->>>>>>> 84cf598bfdfad84049fb27f7c63f4af4b77bf115
 
     start_azimut = start_azimut >> 3;   //Corrimiento, debe ser a la DERECHA
-
-   // qDebug() << start_azimut ;
-
+    //qDebug()<< start_range;
     uint16_t* video_block = 0;
     video_block = (uint16_t*) p.getVIDEO_BLOCK();
     int muestra = 0;
-    toSend.append("{");
+   // toSend.append("[");
     for (int i = 0; i < valid_cells; i++){
         muestra =  qFromBigEndian(video_block[i]);
         muestra = color(muestra);
         cargar_matriz(start_azimut, start_range + i, muestra);
     }
-    toSend.append("}");
+   // toSend.append("]");
 
     QByteArray arr = QByteArray::fromStdString(toSend.toStdString());
-    sock->writeDatagram(arr, QHostAddress::LocalHost, 2020);
+    if(toSend.size() > 2){
+        sock->writeDatagram(arr, QHostAddress::LocalHost, 2020);
+    }
+
     toSend = "";
 }
 
@@ -74,11 +66,11 @@ void DecodificadorASTERIX::cargar_matriz(int angulo, int rango, int muestra)
             if (muestra != matrizPuntos[coordX][coordY]){
 
                 matrizPuntos[coordX][coordY] = muestra;
-                toSend.append(",{\"coordenadaX:\"");
+                toSend.append("{\"coordenadaX\":");
                 toSend.append(QString::number(coordX));
-                toSend.append("\",coordenadaY:\"");
+                toSend.append(",\"coordenadaY\":");
                 toSend.append(QString::number(coordY));
-                toSend.append(",\"color:\"");
+                toSend.append(",\"color\":");
                 toSend.append(QString::number(muestra));
                 toSend.append("}");
 
