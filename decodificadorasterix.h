@@ -17,10 +17,11 @@ private:
 
     static const int NFILAS = 8192;//8192 65535
     static const int CANT_COLORES = 6;
-    static const int MUESTRA_MAX = 65535; //2^16 muestras
+    static const int MUESTRA_MAX = 65535; //2^16 muestras, 65535
     static const int NCOLUMNAS = 4504;
     static const int ALTO_PANTALLA = 16000;
     static const int RADIO_CANVAS = ALTO_PANTALLA / 2;
+    static const int REDUCCION = 25; //Con un numero alto tenemos alta reduccion. 1 sin reducción
     constexpr static const double nTRG = 3700.0;
     constexpr static const double pTRG = 1 / nTRG;
     constexpr static const double RANG_MAX = pTRG * 299792458.0 * 0.00053996;

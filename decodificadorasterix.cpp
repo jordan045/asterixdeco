@@ -32,7 +32,7 @@ void DecodificadorASTERIX::RecibirTrama(Paquete p)
     video_block = (uint16_t*) p.getVIDEO_BLOCK();
     int muestra = 0;
    // toSend.append("[");
-    for (int i = 0; i < valid_cells; i++){
+    for (int i = 0; i < valid_cells; i+=REDUCCION){
         muestra =  qFromBigEndian(video_block[i]);
         muestra = color(muestra);
         cargar_matriz(start_azimut, start_range + i, muestra);
@@ -50,12 +50,19 @@ void DecodificadorASTERIX::RecibirTrama(Paquete p)
 // Mapea la muestra al color
 int DecodificadorASTERIX::color(int c)
 {
-   int color = floor(c / (MUESTRA_MAX / CANT_COLORES));
-   return color;
+   //int color = 0;
+   //color = floor(c / (MUESTRA_MAX / CANT_COLORES));
+
+   if(c < 10000)
+       return 0;
+   else{
+       return floor((c - 10000) / (13000 / CANT_COLORES)) + 1;
+   }
 }
 
 void DecodificadorASTERIX::cargar_matriz(int angulo, int rango, int muestra)
 {
+
     if(muestra != M[angulo][rango]){
         int coordX= puntosX[angulo][rango];
         int coordY= puntosY[angulo][rango];
@@ -64,19 +71,12 @@ void DecodificadorASTERIX::cargar_matriz(int angulo, int rango, int muestra)
 
         if (coordX<ALTO_PANTALLA && coordY<ALTO_PANTALLA){
             if (muestra != matrizPuntos[coordX][coordY]){
-
                 matrizPuntos[coordX][coordY] = muestra;
-                toSend.append("{\"coordenadaX\":");
-                toSend.append(QString::number(coordX));
-                toSend.append(",\"coordenadaY\":");
-                toSend.append(QString::number(coordY));
-                toSend.append(",\"color\":");
-                toSend.append(QString::number(muestra));
-                toSend.append("}");
-
+                toSend.append("{\"coordenadaX\":"+QString::number(coordX)+",\"coordenadaY\":"+QString::number(coordY)+",\"color\":"+QString::number(muestra)+"}");
             }
         }
     }
+
 }
 
 void DecodificadorASTERIX::pre_carga()
